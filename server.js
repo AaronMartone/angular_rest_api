@@ -6,7 +6,7 @@ var urlParser = bodyParser.urlencoded({ extended: true });
 var jsonParser = bodyParser.json();
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/angular_rest_api');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/angular_rest_api');
 
 // import routes.
 var router = express.Router();

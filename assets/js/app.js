@@ -2,7 +2,7 @@ function handleError(message){
     alert(message);
 }
 
-angular.module('resourceAPI', [])
+angular.module('userApp', [])
     .controller('userController', UserController);
 
 function UserController($scope, $http) {
@@ -29,16 +29,16 @@ function UserController($scope, $http) {
     $scope.deleteUser = function deleteUser(id) {
         setView('delete');
         $http.delete('/users/' + $scope.users[id]._id)
-            .success(function(data) {
-                console.log('User deleted successfully.');
-                $scope.updateUserList();
-                setView('list');
-            })
-            .error(function(data) {
-                console.log('\n\n\nApp Error:', data);
-                handleError('Application failed to delete user.');
-                setView('list');
-            });
+        .success(function(data) {
+            console.log('User deleted successfully.');
+            $scope.updateUserList();
+            setView('list');
+        })
+        .error(function(data) {
+            console.log('\n\n\nApp Error:', data);
+            handleError('Application failed to delete user.');
+            setView('list');
+        });
     };
 
     // loads a user to be edited from the database.
@@ -46,16 +46,16 @@ function UserController($scope, $http) {
         setView('edit');
         $scope.editID = id;
         $http.get('/users/' + $scope.users[id]._id)
-            .success(function(result) {
-                $scope.username = result.data.username;
-                $scope.lastname = result.data.name.last;
-                $scope.firstname = result.data.name.first;
-                $scope.email = result.data.email;
-            })
-            .error(function(data) {
-                console.log('\n\n\nApp Error:', data);
-                handleError('Application failed to obtain user for edit.');
-            })
+        .success(function(result) {
+            $scope.username = result.data.username;
+            $scope.lastname = result.data.name.last;
+            $scope.firstname = result.data.name.first;
+            $scope.email = result.data.email;
+        })
+        .error(function(data) {
+            console.log('\n\n\nApp Error:', data);
+            handleError('Application failed to obtain user for edit.');
+        })
     };
 
     // performs the insertion (add) or updating (edit) of a user.
