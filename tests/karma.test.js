@@ -17,36 +17,18 @@ describe('User controller', function() {
         $ControllerConstructor = $controller;
     }));
 
-});
-/*
-
-require('../../app/js/client');
-require('angular-mocks');
-
-describe('notes controller', function() {
-    var $ControllerConstructor;
-    var $httpBackend;
-    var $scope;
-
-    beforeEach(angular.mock.module('notesApp'));
-
-    beforeEach(angular.mock.inject(function($rootScope, $controller) {
-        $scope = $rootScope.$new();
-        $ControllerConstructor = $controller; 
-    }));
-
-    it('should be able to create a new controller', function() {
-        var notesController = $ControllerConstructor('notesController', {$scope: $scope});
-        expect(typeof notesController).toBe('object');
-        expect(Array.isArray($scope.notes)).toBe(true);
+    it('should create a new controller', function() {
+        var userController = $ControllerConstructor('userController', { $scope: $scope });
+        expect(typeof userController).toBe('object');
+        expect(Array.isArray($scope.users)).toBe(true);
         expect(Array.isArray($scope.errors)).toBe(true);
         expect(typeof $scope.getAll).toBe('function');
     });
 
-    describe('REST functionality', function() {
+    describe('Perform REST functions', function() {
         beforeEach(angular.mock.inject(function(_$httpBackend_) {
             $httpBackend = _$httpBackend_;
-            this.notesController = $ControllerConstructor('notesController', {$scope: $scope});
+            this.userController = $ControllerConstructor('userController', {$scope: $scope});
         }));
 
         afterEach(function() {
@@ -54,58 +36,97 @@ describe('notes controller', function() {
             $httpBackend.verifyNoOutstandingRequest();
         });
 
-        it('should make a get request on index', function() {
-            $httpBackend.expectGET('/api/notes').respond(200, [{_id: '1', noteBody: 'test note'}]);
-            $scope.getAll();
+        it('should get a list of all users', function() {
+            $httpBackend.expectGET('/users').respond(200, [{
+                _id: '1',
+                username: 'Test User',
+                name: {
+                    last: 'User',
+                    first: 'Test'
+                },
+                email: 'testuser@example.com'
+            }]);
+            $scope.getUsers();
             $httpBackend.flush();
-            expect($scope.notes[0].noteBody).toBe('test note');
-            expect($scope.notes[0]._id).toBe('1');
+            expect($scope.users[0].username).toBe('Test User');
+            expect($scope.users[0].name.last).toBe('User');
+            expect($scope.users[0].name.first).toBe('Test');
+            expect($scope.users[0].email).toBe('testuser@example.com');
+            expect($scope.users[0]._id).toBe('1');
         });
 
-        it('should correctly handle errors', function() {
-            $httpBackend.expectGET('/api/notes').respond(500, {msg: 'server error'}) ;
-            $scope.getAll();
+        it('should create new user', function() {
+            $scope.newUser = {
+                username: 'Test User',
+                name: {
+                    last: 'User',
+                    first: 'Test'
+                },
+                email: 'testuser@example.com'
+            };
+            $httpBackend.expectPOST('/users').respond(200, {
+                _id: 2,
+                username: 'Test User',
+                name: {
+                    last: 'User',
+                    first: 'Test'
+                },
+                email: 'testuser@example.com'
+            });
+            $scope.createUser();
             $httpBackend.flush();
-            expect($scope.errors.length).toBe(1);
-            expect($scope.errors[0].msg).toBe('error retrieving notes');
+            expect($scope.users[0].noteBody).toBe('Test User'); 
+            expect($scope.users[0]._id).toBe('2');
+            expect($scope.newUser).toBe(null);
         });
 
-        it('should be able to save a new note', function() {
-            $scope.newNote = {noteBody: 'test note'};
-            $httpBackend.expectPOST('/api/notes').respond(200, {_id: '2', noteBody: 'test note'});
-            $scope.createNewNote();
-            $httpBackend.flush();
-            expect($scope.notes[0].noteBody).toBe('test note'); 
-            expect($scope.notes[0]._id).toBe('2');
-            expect($scope.newNote).toBe(null);
-        });
+        it('should delete a user', function() {
+            var note = {
+                _id: '3', 
+                username: 'Test User',
+                name: {
+                    last: 'User',
+                    first: 'Test'
+                },
+                email: 'testuser@example.com'
+            };
+            $scope.users.push(user);
+            $httpBackend.expectDELETE('/users/3').respond(200, {
+                success: true,
+                message: 'User successfully deleted.'
+            });
 
-        it('should delete a note', function() {
-            var note = {_id: '3', noteBody: 'test note'};
-            $scope.notes.push(note);
-            $httpBackend.expectDELETE('/api/notes/3').respond(200, {msg: 'success!'});
-
-            expect($scope.notes.indexOf(note)).not.toBe(-1);
-            $scope.removeNote(note);
-            expect($scope.notes.indexOf(note)).toBe(-1);
+            expect($scope.users.indexOf(user)).not.toBe(-1);
+            $scope.deleteUser(user);
+            expect($scope.users.indexOf(user)).toBe(-1);
             $httpBackend.flush(); 
             expect($scope.errors.length).toBe(0); 
         });
 
-        it('should delete a note even on server error', function() {
-            var note = {_id: '4', noteBody: 'test note'};
-            $scope.notes.push(note);
-            $httpBackend.expectDELETE('/api/notes/4').respond(500, {msg: 'wah wah'});
+        it('should delete user, even on errors', function() {
+            var user = {
+                _id: '4', 
+                username: 'Test User',
+                name: {
+                    last: 'User',
+                    first: 'Test'
+                },
+                email: 'testuser@example.com'
+            };
+            $scope.users.push(user);
+            $httpBackend.expectDELETE('/users/4').respond(500, {
+                success: false,
+                message: 'error while deleting user'
+            });
 
-            expect($scope.notes.indexOf(note)).not.toBe(-1);
-            $scope.removeNote(note);
-            expect($scope.notes.indexOf(note)).toBe(-1);
+            expect($scope.users.indexOf(user)).not.toBe(-1);
+            $scope.deleteUser(user);
+            expect($scope.users.indexOf(user)).toBe(-1);
             $httpBackend.flush(); 
-            expect($scope.errors.length).toBe(1); 
-            expect($scope.errors[0].msg).toBe('could not remove note: test note')
+            expect($scope.users.length).toBe(1); 
+            expect($scope.users[0].msg).toBe('error while deleting user')
         });
 
     });
-});
 
-*/
+});
