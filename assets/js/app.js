@@ -1,3 +1,11 @@
+(function() {
+
+    var app = angular.module('userApp', []);
+
+}());
+
+/*
+
 function handleError(message){
     alert(message);
 }
@@ -33,7 +41,7 @@ function UserController($scope, $http) {
             console.log('User deleted successfully.');
             $scope.updateUserList();
             setView('list');
-        })
+        })  
         .error(function(data) {
             console.log('\n\n\nApp Error:', data);
             handleError('Application failed to delete user.');
@@ -123,3 +131,4 @@ function UserController($scope, $http) {
     $scope.updateUserList();    
 
 }
+*/

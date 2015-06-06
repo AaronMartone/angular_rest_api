@@ -17,7 +17,7 @@
                 <div id="actions">
 
                     <!-- 'add user' button -->
-                    <button id="btn_add_user" data-ng-show="view=='list'" data-ng-click="addUser()">Add User</button>
+                    <button id="btn_add_user" data-ng-show="view=='list'" data-ng-click="createUser()">Add User</button>
 
                     <!-- 'user' fields -->
                     <input type="text" name="username" data-ng-show="view=='add' || view=='edit'" data-ng-model="username" placeholder="username">
@@ -44,5 +44,8 @@
         </div>
         <script src="js/angular.min.js"></script>
         <script src="js/app.js"></script>
+        <script src="js/UsersController.js"></script>
+        <script src="js/UsersService.js"></script>
+        <script src="js/UsersDirective.js"></script>
     </body>
 </html>
