@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US" data-ng-app="userApp">
+    <head>
+        <meta charset="UTF-8">
+        <title>Angular Single Resource API</title>
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <h1>Aaron&apos;s Angular App (Patent Pending)</h1>
+        <div data-ng-controller="userController">            
+            
+            <div>
+                <h2>User Manager</h2>
+                <hr>
+
+                <!-- actions -->
+                <div id="actions">
+
+                    <!-- 'add user' button -->
+                    <button id="btn_add_user" data-ng-show="view=='list'" data-ng-click="createUser()">Add User</button>
+
+                    <!-- 'user' fields -->
+                    <input type="text" name="username" data-ng-show="view=='add' || view=='edit'" data-ng-model="username" placeholder="username">
+                    <input type="text" name="lastname" data-ng-show="view=='add' || view=='edit'" data-ng-model="lastname" placeholder="last name">
+                    <input type="text" name="firstname" data-ng-show="view=='add' || view=='edit'" data-ng-model="firstname" placeholder="first name">
+                    <input type="text" name="email" data-ng-show="view=='add' || view=='edit'" data-ng-model="email" placeholder="email">    
+                
+                    <!-- 'save user' button -->
+                    <button id="btn_save_user" data-ng-show="view=='add' || view=='edit'" data-ng-click="saveUser()">Save User</button>
+
+                    <!-- 'cancel action' button -->
+                    <button id="btn_cancel_action" data-ng-show="view=='add' || view=='edit'" data-ng-click="cancelAction()">Cancel Action</button>
+
+                </div>
+
+                <hr>
+
+                <!-- user list. -->
+                <div data-ng-repeat="user in users" data-ng-class="{oddRow: $index % 2 == 0}">
+                    <p><button data-ng-click="editUser($index)">Edit User</button> <button data-ng-click="deleteUser($index)">Delete User</button> {{user.username}} ({{user.name.last}}, {{user.name.first}} &ndash; {{user.email}})</p>
+                </div>
+            </div>
+            
+        </div>
+        <script src="js/angular.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/UsersController.js"></script>
+        <script src="js/UsersService.js"></script>
+        <script src="js/UsersDirective.js"></script>
+    </body>
+</html>
