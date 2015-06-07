@@ -12,7 +12,7 @@ module.exports = function(router) {
             res.sendFile(path.join(__dirname, '../', '/app/index.html'));
         });
 
-    router.route('/users')
+    router.route('/api/users')
         // list all users.
         .get(function(req, res, next) {
             User.find({}, function(err, results) {
@@ -38,7 +38,7 @@ module.exports = function(router) {
             });
         });
 
-    router.route('/users/:id')
+    router.route('/api/users/:id')
         // view a user.
         .get(function(req, res, next) {
             User.findOne({ _id: ObjectId(req.params.id) }, function(err, result) {

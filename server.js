@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var urlParser = bodyParser.urlencoded({ extended: true });
 var jsonParser = bodyParser.json();
 var mongoose = require('mongoose');
+var favicon = require('serve-favicon');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/angular_rest_api');
 
@@ -16,7 +17,7 @@ require('./routes')(router);
 app.use(express.static(__dirname + '/assets'));
 
 // global middleware.
-app.use([urlParser, jsonParser, router]);
+app.use([favicon(__dirname + '/assets/img/favicon.png'), urlParser, jsonParser, router]);
 
 // 404 handler.
 app.use(function(req, res, next) {

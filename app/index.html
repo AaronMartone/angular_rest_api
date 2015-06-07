@@ -1,35 +1,36 @@
 <!DOCTYPE html>
-<html lang="en-US" data-ng-app="userApp">
+<html lang="en-US" data-ng-app="usersApp">
     <head>
         <meta charset="UTF-8">
-        <title>Angular Single Resource API</title>
+        <title>Aaron&apos;s Angular App</title>
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
-        <h1>Aaron&apos;s Angular App (Patent Pending)</h1>
-        <div data-ng-controller="userController">            
+        <h1>Aaron&apos;s Angular App</h1>
+        <div data-ng-controller="UsersController">            
             
             <div>
-                <h2>User Manager</h2>
+                <h2>User Manager</h2>               
                 <hr>
 
                 <!-- actions -->
-                <div id="actions">
+                <div>
 
-                    <!-- 'add user' button -->
-                    <button id="btn_add_user" data-ng-show="view=='list'" data-ng-click="createUser()">Add User</button>
+                    <!-- 'add a user' button -->
+                    <button data-ng-show="viewState=='list'" data-ng-click="addUser()">Add a User</button>
 
                     <!-- 'user' fields -->
-                    <input type="text" name="username" data-ng-show="view=='add' || view=='edit'" data-ng-model="username" placeholder="username">
-                    <input type="text" name="lastname" data-ng-show="view=='add' || view=='edit'" data-ng-model="lastname" placeholder="last name">
-                    <input type="text" name="firstname" data-ng-show="view=='add' || view=='edit'" data-ng-model="firstname" placeholder="first name">
-                    <input type="text" name="email" data-ng-show="view=='add' || view=='edit'" data-ng-model="email" placeholder="email">    
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="username" placeholder="username">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="lastname" placeholder="last name">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="firstname" placeholder="first name">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="email" placeholder="email">    
                 
-                    <!-- 'save user' button -->
-                    <button id="btn_save_user" data-ng-show="view=='add' || view=='edit'" data-ng-click="saveUser()">Save User</button>
+                    <!-- 'create/update user' button -->
+                    <button data-ng-show="viewState=='add'" data-ng-click="createUser()">Create User</button>
+                    <button data-ng-show="viewState=='edit'" data-ng-click="updateUser()">Update User</button>
 
                     <!-- 'cancel action' button -->
-                    <button id="btn_cancel_action" data-ng-show="view=='add' || view=='edit'" data-ng-click="cancelAction()">Cancel Action</button>
+                    <button data-ng-show="viewState=='add' || viewState=='edit'" data-ng-click="cancelAction()">Cancel Action</button>
 
                 </div>
 
@@ -37,15 +38,15 @@
 
                 <!-- user list. -->
                 <div data-ng-repeat="user in users" data-ng-class="{oddRow: $index % 2 == 0}">
-                    <p><button data-ng-click="editUser($index)">Edit User</button> <button data-ng-click="deleteUser($index)">Delete User</button> {{user.username}} ({{user.name.last}}, {{user.name.first}} &ndash; {{user.email}})</p>
+                    <user-controls></user-controls>                    
                 </div>
             </div>
             
         </div>
         <script src="js/angular.min.js"></script>
-        <script src="js/app.js"></script>
-        <script src="js/UsersController.js"></script>
-        <script src="js/UsersService.js"></script>
-        <script src="js/UsersDirective.js"></script>
+        <script src="js/app.js"></script>    
+        <script src="js/directives/UsersDirective.js"></script>    
+        <script src="js/services/UsersService.js"></script>
+        <script src="js/controllers/UsersController.js"></script>        
     </body>
 </html>
