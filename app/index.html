@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US" data-ng-app="usersApp">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aaron&apos;s Angular App</title>
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <h1>Aaron&apos;s Angular App</h1>
+        <div data-ng-controller="UsersController">            
+            
+            <div>
+                <h2>User Manager</h2>               
+                <hr>
+
+                <!-- actions -->
+                <div>
+
+                    <!-- 'add a user' button -->
+                    <button data-ng-show="viewState=='list'" data-ng-click="addUser()">Add a User</button>
+
+                    <!-- 'user' fields -->
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="username" placeholder="username">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="lastname" placeholder="last name">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="firstname" placeholder="first name">
+                    <input type="text" data-ng-show="viewState=='add' || viewState=='edit'" data-ng-model="email" placeholder="email">    
+                
+                    <!-- 'create/update user' button -->
+                    <button data-ng-show="viewState=='add'" data-ng-click="createUser()">Create User</button>
+                    <button data-ng-show="viewState=='edit'" data-ng-click="updateUser()">Update User</button>
+
+                    <!-- 'cancel action' button -->
+                    <button data-ng-show="viewState=='add' || viewState=='edit'" data-ng-click="cancelAction()">Cancel Action</button>
+
+                </div>
+
+                <hr>
+
+                <!-- user list. -->
+                <div data-ng-repeat="user in users" data-ng-class="{oddRow: $index % 2 == 0}">
+                    <user-controls></user-controls>                    
+                </div>
+            </div>
+            
+        </div>
+        <script src="js/angular.min.js"></script>
+        <script src="js/app.js"></script>    
+        <script src="js/directives/UsersDirective.js"></script>    
+        <script src="js/services/UsersService.js"></script>
+        <script src="js/controllers/UsersController.js"></script>        
+    </body>
+</html>
